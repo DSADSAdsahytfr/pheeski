@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHEE GAMBEL</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212; /* Dark mode background */
+            color: white; /* Text color for dark mode */
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #ff6347;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        #slot-machine {
+            margin: 20px auto;
+            width: 350px;
+            height: 120px;
+            border: 5px solid #ff6347;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #1e1e1e; /* Darker background for the slot machine */
+            font-size: 2.5em; /* Adjusted for smaller symbols */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .phi {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            border-radius: 50%;
+            color: white;
+            font-size: 2em; /* Adjusted size for phi symbol */
+            transition: transform 0.3s;
+        }
+        .phi:hover {
+            transform: scale(1.1);
+        }
+        .phi1 { background-color: #ff0044; }
+        .phi2 { background-color: #ffff00; }
+        .phi3 { background-color: #ff8c00; }
+        .phi4 { background-color: #32cd32; }
+        .phi5 { background-color: #8a2be2; }
+        .phi6 { background-color: #ff4500; }
+        .phi7 { background-color: #7fff00; }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            color: white;
+            background-color: #ff6347;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #ff4500;
+            transform: translateY(-2px);
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 2em;
+            color: #fff; /* Message color for dark mode */
+            font-weight: bold;
+        }
+        #currency {
+            margin-top: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #currency img {
+            width: 40px; /* Adjust size as needed */
+            height: auto;
+            margin-right: 10px;
+        }
+        #difficulty {
+            margin: 20px 0;
+            font-size: 1.5em;
+        }
+        #gift-card-section {
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px dashed #ff6347;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        #gift-card-code {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #ffd700; /* Gold color for the input */
+        }
+    </style>
+</head>
+<body>
+    <h1>PHEE GAMBEL</h1>
+    <div id="difficulty">
+        <label for="difficulty-select">Choose Difficulty:</label>
+        <select id="difficulty-select">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
+    <div id="slot-machine">
+        <div id="slot1" class="phi phi1">Φ</div>
+        <div id="slot2" class="phi phi2">Φ</div>
+        <div id="slot3" class="phi phi3">Φ</div>
+    </div>
+    <button id="spin-button">Spin!</button>
+    <div id="message"></div>
+    <div id="currency">
+        <img src="phee.png" alt="Phee Currency"> <!-- Display the Phee currency image -->
+        <span id="phee-count">100</span> PHEE
+    </div>
+
+    <div id="gift-card-section">
+        <h2>Claim Your PHEE Gift Card</h2>
+        <input type="text" id="gift-card-code" placeholder="Enter your code (e.g. PHEE-XXXX-XXXX)" />
+        <button onclick="claimGiftCard()">Claim Gift Card</button>
+        <div id="gift-card-message"></div>
+    </div>
+
+    <script>
+        const symbols = [
+            { symbol: 'Φ', class: 'phi1' },
+            { symbol: 'Φ', class: 'phi2' },
+            { symbol: 'Φ', class: 'phi3' },
+            { symbol: 'Φ', class: 'phi4' },
+            { symbol: 'Φ', class: 'phi5' },
+            { symbol: 'Φ', class: 'phi6' },
+            { symbol: 'Φ', class: 'phi7' }
+        ];
+        const spinButton = document.getElementById('spin-button');
+        const slot1 = document.getElementById('slot1');
+        const slot2 = document.getElementById('slot2');
+        const slot3 = document.getElementById('slot3');
+        const message = document.getElementById('message');
+        const difficultySelect = document.getElementById('difficulty-select');
+        const giftCardCodeInput = document.getElementById('gift-card-code');
+        const giftCardMessage = document.getElementById('gift-card-message');
+
+        let pheeCount = 100; // Starting amount of virtual currency
+        const pheeCountDisplay = document.getElementById('phee-count');
+        const claimedCodes = []; // Array to store claimed gift card codes
+
+        spinButton.addEventListener('click', () => {
+            if (pheeCount <= 0) {
+                message.textContent = 'You have no PHEE left! Please refresh to play again.';
+                return;
+            }
+
+            // Deduct one PHEE for each spin
+            pheeCount--;
+            pheeCountDisplay.textContent = pheeCount;
+
+            // Randomly select symbols for each slot
+            const result1 = symbols[Math.floor(Math.random() * symbols.length)];
+            const result2 = symbols[Math.floor(Math.random() * symbols.length)];
+            const result3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+            // Update the slot machine display
+            slot1.textContent = result1.symbol;
+            slot2.textContent = result2.symbol;
+            slot3.textContent = result3.symbol;
+
+            // Update the class for styling
+            slot1.className = `phi ${result1.class}`;
+            slot2.className = `phi ${result2.class}`;
+            slot3.className = `phi ${result3.class}`;
+
+            // Winning condition based on difficulty
+            const selectedDifficulty = difficultySelect.value;
+            let winConditionMet = false;
+
+            if (selectedDifficulty === 'easy') {
+                winConditionMet = (result1.class === result2.class) || (result1.class === result3.class) || (result2.class === result3.class);
+            } else if (selectedDifficulty === 'medium') {
+                winConditionMet = (result1.class === result2.class && result1.class === result3.class) || 
+                                  (result1.class === result2.class) || 
+                                  (result1.class === result3.class) || 
+                                  (result2.class === result3.class);
+            } else if (selectedDifficulty === 'hard') {
+                winConditionMet = (result1.class === result2.class && result2.class === result3.class);
+            }
+
+            if (winConditionMet) {
+                message.textContent = 'Congratulations! You win!';
+                pheeCount += (selectedDifficulty === 'easy') ? 10 : (selectedDifficulty === 'medium') ? 20 : 30; // Reward based on difficulty
+            } else {
+                message.textContent = 'Try again!';
+            }
+
+            // Update display after the result
+            pheeCountDisplay.textContent = pheeCount;
+        });
+
+        function claimGiftCard() {
+            const giftCardCode = giftCardCodeInput.value.trim();
+            const giftCardRegex = /^PHEE-[A-Z0-9]+-[0-9]+$/; // Regex for PHEE code
+
+            if (giftCardRegex.test(giftCardCode)) {
+                if (claimedCodes.includes(giftCardCode)) {
+                    giftCardMessage.textContent = 'This gift card code has already been claimed!';
+                } else {
+                    claimedCodes.push(giftCardCode); // Store the claimed code
+                    giftCardMessage.textContent = 'Gift card claimed successfully! You have received 50 PHEE.';
+                    pheeCount += 50; // Add PHEE for claiming the gift card
+                    pheeCountDisplay.textContent = pheeCount;
+                    giftCardCodeInput.value = ''; // Clear the input field
+                }
+            } else {
+                giftCardMessage.textContent = 'Invalid PHEE code format! Please enter a valid code like PHEE-XXXXX-XXXX.';
+            }
+        }
+    </script>
+</body>
+</html>

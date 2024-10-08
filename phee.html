@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHEE Currency</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212; /* Dark mode background */
+            color: white; /* Text color for dark mode */
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #ff6347;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.5em;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            color: white;
+            background-color: #ff6347;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #ff4500;
+            transform: translateY(-2px);
+        }
+        #gift-card-section {
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px dashed #ff6347;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        #code-display {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #ffd700; /* Gold color for the generated code */
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the PHEE Currency!</h1>
+    <p>
+        PHEE is a revolutionary virtual currency designed for gaming and online experiences. 
+        With PHEE, players can engage in exciting games, unlock rewards, and participate in 
+        unique experiences that enhance their gameplay. Whether you're spinning the slot machine or 
+        exploring new adventures, PHEE provides endless possibilities.
+    </p>
+    <p>
+        Join the community of PHEE enthusiasts and start playing today!
+    </p>
+    <button onclick="window.location.href='index.html'">Start Playing Now!</button>
+
+    <div id="gift-card-section">
+        <h2>Buy PHEE Gift Card</h2>
+        <button onclick="generateCode()">Generate PHEE Gift Card Code</button>
+        <div id="code-display"></div>
+    </div>
+
+    <script>
+        function generateCode() {
+            const code = `PHEE-${Math.random().toString(36).substr(2, 5).toUpperCase()}-${Math.floor(Math.random() * 10000)}`;
+            document.getElementById('code-display').textContent = `Your code: ${code} (50 PHEE applied!)`;
+
+            // Save to imp.txt (simulation, replace with server-side logic if necessary)
+            fetch('save_code.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code: code }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Code saved:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
