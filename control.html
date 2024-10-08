@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHEE Control Panel</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #ff6347;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 1.2em;
+            margin: 10px 0;
+            width: 80%;
+            max-width: 400px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            color: white;
+            background-color: #ff6347;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff4500;
+        }
+        #shortened-url {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <h1>PHEE Control Panel</h1>
+    <input type="text" id="friend-name" placeholder="Enter your friend's name" required>
+    <button onclick="generateShareLink()">Generate Share Link</button>
+    <div id="shortened-url"></div>
+
+    <script>
+        const shortenedLinks = [
+            "https://tinyurl.com/okaygs",
+            "https://tinyurl.com/shwgm",
+            "https://tinyurl.com/gmjikf",
+            "https://tinyurl.com/mbklx",
+            "https://tinyurl.com/hminca",
+            "https://tinyurl.com/htgjrw",
+            "https://tinyurl.com/awrtgnb",
+            "https://tinyurl.com/rashkijop",
+            "https://tinyurl.com/ohkofka"
+        ];
+
+        function generateShareLink() {
+            const friendName = document.getElementById('friend-name').value;
+
+            // Randomly select a shortened URL from the list
+            const randomIndex = Math.floor(Math.random() * shortenedLinks.length);
+            const randomShortenedUrl = shortenedLinks[randomIndex];
+
+            // Creating a personalized share link
+            const shareLink = `${randomShortenedUrl}?invite=${encodeURIComponent(friendName)}`;
+
+            // Display the generated share link
+            document.getElementById('shortened-url').textContent = `Generated Share Link: ${shareLink}`;
+        }
+    </script>
+</body>
+</html>
